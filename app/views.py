@@ -97,10 +97,12 @@ class Search(APIView):
 class Sendmail(APIView):
 
     """ We will be able to send a message to an email via Sendmail """
-    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request:Request):
         serializer = MailSerializers()
         return Response(serializer.data)
+
+    permission_classes = [permissions.IsAuthenticated]
 
 
 
@@ -112,7 +114,7 @@ class Sendmail(APIView):
 
         for user in users:
             subject = serializer.validated_data.get('name')
-            message = f'{user.username}{serializer.validated_data.get('email')}'
+            message = f'{user.username} {serializer.validated_data.get('text')}'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [user.email]
 
