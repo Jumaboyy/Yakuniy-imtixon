@@ -13,26 +13,26 @@ from rest_framework.authentication import TokenAuthentication
 
 
 class TeacherView(viewsets.ModelViewSet):
-    """ TeacherView """
+    """ We do CRUD on TeacherView """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializers
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 class CommentView(viewsets.ModelViewSet):
-    """ CommentView """
+    """ We manage comments through CommentView """
     queryset = Comment.objects.all()
     serializer_class = CommentSerializers
-    permission_classes = [permissions.DjangoObjectPermissions]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class CourseView(viewsets.ModelViewSet):
-    """ CourseView """
+    """ And CourseView, we manage the CRUD part of the courses """
     queryset = Course.objects.all()
     serializer_class = CourseSerializers
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 class LessonView(viewsets.ModelViewSet):
-    """ LessonView """
+    """ In LessonView, we can manage lessons in courses """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializers
     permission_classes = [permissions.DjangoModelPermissions]
@@ -41,7 +41,7 @@ class LessonView(viewsets.ModelViewSet):
 
 
 class LikeAPIview(APIView):
-    """ LikeAPIview """
+    """ LikeAPIview indicates whether the person viewing the lesson liked or disliked the lesson """
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         serializer = LikeSerializer()
@@ -87,7 +87,7 @@ class LessonVideoView(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
 
 class Search(APIView):
-    """ Search """
+    """ You will be able to search for lessons through the Search View """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request: Request):
         word=str(request.query_params.get('title',))
@@ -96,7 +96,7 @@ class Search(APIView):
 
 class Sendmail(APIView):
 
-    """ Sendmail """
+    """ We will be able to send a message to an email via Sendmail """
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request:Request):
         serializer = MailSerializers()
